@@ -36,7 +36,7 @@ def edit
 end
 ```
 
-The model to which you're adding a rwandan location needs attributes `district`, `sector`, `cell` and `village`.
+The model to which you're adding a Rwandan location needs attributes `district`, `sector`, `cell` and `village`.
 
 ```
 rails generate migration add_location_to_person district:string sector:string cell:string village:string
