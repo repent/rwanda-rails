@@ -1,5 +1,7 @@
+require "rwanda"
 require "rwanda/rails/version"
 require "rwanda/rails/location"
+require "action_view"
 
 class Rwanda
   module Rails

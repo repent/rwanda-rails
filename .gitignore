@@ -13,3 +13,4 @@
 *.a
 mkmf.log
 old.*
+.ruby-version
