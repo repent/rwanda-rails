@@ -24,6 +24,7 @@ In the view:
 
 ```erb
 <%= form_for(@person) %>
+  <%# "force_edit: @force_edit" is necessary in order to be able to edit previously filled-in fields %>
   <%= f.rwanda_location(loc, { force_edit: @force_edit, autosubmit: true }) %>
 <%= f.submit 'Update Location' %>
 ```
@@ -31,6 +32,7 @@ In the view:
 In the controller:
 
 ```ruby
+# Can be in its own action instead of edit if you prefer
 def edit
   @force_edit = params[:force_edit]
 end
