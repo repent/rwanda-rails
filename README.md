@@ -44,6 +44,10 @@ The model to which you're adding a Rwandan location needs attributes `district`,
 rails generate migration add_location_to_person district:string sector:string cell:string village:string
 ```
 
+## Status
+
+[![Gem Version](https://badge.fury.io/rb/rwanda-rails.svg)](http://badge.fury.io/rb/rwanda-rails)
+
 ## Contributing
 
 1. Fork it ( https://github.com/repent/rwanda-rails/fork )

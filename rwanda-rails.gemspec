@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "pry", "~> 0.10.1"
   spec.add_runtime_dependency "rails", "~> 4.1.4"
-  spec.add_runtime_dependency "rwanda", "~> 0.6.0"
+  spec.add_runtime_dependency "rwanda", ">= 0.6.0"
 end
 
 

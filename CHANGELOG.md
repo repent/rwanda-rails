@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+ * Allow rwanda version to increment
+
 ## 0.1.0
 
  * Rails-only components of Rwanda geography moved over from bespoke project
