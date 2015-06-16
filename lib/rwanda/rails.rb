@@ -55,7 +55,6 @@ class Rwanda
             output <<
               "<b>#{div}</b> #{level.to_s.humanize}\n&nbsp;#{'</td><td>' if config[:table]}".html_safe <<
               link_to("[Change this]", polymorphic_path(object_name, action: config[:action], force_edit: level))
-              # cleaned_options[:edit_path]) # edit_company_location_path(force_edit: level))
           else
             # greyed out message
             output << "Enter data above before selecting #{level.to_s.humanize}\n"
@@ -68,42 +67,6 @@ class Rwanda
         #location.to_s
         output
       end
-      
-      #private
-      #def division(division, company, force_edit=false)
-      #  #logger.debug "force_edit: #{force_edit} (#{force_edit.class.to_s}); division: #{division} (#{division.class.to_s})"
-      #  force_edit &&= force_edit.to_symbol
-      #  # all higher divisions validate
-      #  if validate_higher(division, company)
-      #    # this division validates
-      #    if validate_this(division, company)
-      #      # user has asked to edit this division
-      #      if force_edit == division
-      #        #> drop-down
-      #        return true
-      #      # user hasn't asked to edit
-      #      else
-      #        #> display as text with link to edit
-      #        return false
-      #      end
-      #    # this division doesn't validate
-      #    else
-      #      # another division has been forced
-      #      if force_edit && force_edit != division
-      #        #> greyed out
-      #        return false
-      #      else
-      #        #> drop-down
-      #        return true
-      #      end
-      #    end
-      #  # at least one higher division doesn't validate
-      #  else
-      #    # greyed out message
-      #    return false
-      #  end
-      #end      
-      #end
     end
     
     module FormBuilder

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.3
+
+ * Significant corrections and added detail to README
+ * Reference example application at Github
+ 
+## 0.1.2
+
+ * Remmove inadvertent references to tracker models (first testing with an empty application)
+
 ## 0.1.1
 
  * Allow rwanda version to increment
