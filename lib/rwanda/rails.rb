@@ -10,43 +10,61 @@ class Rwanda
         ActionView::Helpers::FormBuilder.send(:include, FormBuilder)
       end
       
-      def rwanda_location(object_name, location, options={})
-        cleaned_options = { include_blank: 'Unknown' }
-        cleaned_options[:onchange] = "this.form.submit();" if options[:autosubmit]
-        cleaned_options.merge!(options.select {|k,v| [ :force_edit, :table ].include? k })
+      # available options:
+      #  required:
+      #   :force_edit - name of level that has specifically been requested to be changed by the user
+      #  optional:
+      #   :autosubmit - submit the form immediately rather than waiting for the button to be pressed
+      #   :include_blank - string to display if nothing selected, defaults to 'Unknown'
+      #   :table - output in a <table> if true
+      #   #:edit_path - defaults to edit_model_path
+      #   :action - defaults to edit
+      
+      def rwanda_location(object_name, location, raw_options={})
+        # transfer everything from raw_options into config for random access
+        config = { table: true, action: 'edit' }.merge(raw_options)
+        
+        # pick out only those raw_options that will be passed to select_tag
+        select_options = { include_blank: 'Unknown' }.merge(raw_options.select {|k,v| [ :force_edit, :include_blank ].include? k })
+        select_options[:onchange] = "this.form.submit();" if raw_options[:autosubmit]
+        
         # object_name = company
         # location = Struct.new( :division ... )
-        output = cleaned_options[:table] ? "<table border=0>\n".html_safe : ''.html_safe
+        output = config[:table] ? "<table border=0>\n".html_safe : ''.html_safe
         # location is a Location object defined in the rails gem
         location.validate! # get rid of any erroneous data -- no more checks necessary
-        force_edit = options[:force_edit]
+        force_edit = config[:force_edit] ? config[:force_edit].to_sym : nil
+        #binding.pry
+        #cleaned_options[:edit_path] = options[:edit_path] || edit_polymorphic_path(object_name, force_edit: force_edit)
         location.each_pair do |level, div|
-          output << "<tr><td>\n".html_safe if cleaned_options[:table]
+          output << "<tr><td>\n".html_safe if config[:table]
           output << "<div class=\"field\">\n".html_safe
+          #binding.pry
           if force_edit == level || ( location.first_missing == level && !force_edit )
             # editable
             # Want subdivisions of [district] if level is sector
             subdivisions = Rwanda.instance.subdivisions_of(location.top(Location.index_of(level)-1))
             
-            subdivision_options = { selected: div }.merge(cleaned_options)
+            subdivision_options = { selected: div }.merge(select_options)
             output <<
-              select_tag("#{object_name}[#{level}]", options_for_select(subdivisions, div), cleaned_options) <<
-              " #{level.humanize}".html_safe
-            output << "</td><td></td>\n".html_safe if cleaned_options[:table]
+              select_tag("#{object_name}[#{level}]", options_for_select(subdivisions, div), select_options) <<
+              " #{level.to_s.humanize}".html_safe
+            output << "</td><td></td>\n".html_safe if config[:table]
           elsif div
             # display
             output <<
-              "<b>#{div}</b> #{level.humanize}\n&nbsp;#{'</td><td>' if cleaned_options[:table]}".html_safe <<
-              link_to("[Change this]", edit_company_location_path(force_edit: level))
+              "<b>#{div}</b> #{level.to_s.humanize}\n&nbsp;#{'</td><td>' if config[:table]}".html_safe <<
+              link_to("[Change this]", polymorphic_path(object_name, action: config[:action], force_edit: level))
+              # cleaned_options[:edit_path]) # edit_company_location_path(force_edit: level))
           else
             # greyed out message
-            output << "Enter data above before selecting #{level.humanize}\n"
-            output << "</td><td></td>\n".html_safe if cleaned_options[:table]
+            output << "Enter data above before selecting #{level.to_s.humanize}\n"
+            output << "</td><td></td>\n".html_safe if config[:table]
           end
           output << "</div>\n".html_safe
-          output << "</td></tr>\n".html_safe if cleaned_options[:table]
+          output << "</td></tr>\n".html_safe if config[:table]
         end
-        output << "</table>\n".html_safe if cleaned_options[:table]
+        output << "</table>\n".html_safe if config[:table]
         #location.to_s
         output
       end
